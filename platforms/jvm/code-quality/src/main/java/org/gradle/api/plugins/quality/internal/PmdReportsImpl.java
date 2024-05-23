@@ -26,7 +26,9 @@ import org.gradle.api.reporting.internal.TaskReportContainer;
 import javax.inject.Inject;
 
 public class PmdReportsImpl extends TaskReportContainer<SingleFileReport> implements PmdReports {
+
     @Inject
+    @SuppressWarnings("this-escape")
     public PmdReportsImpl(Task task, CollectionCallbackActionDecorator callbackActionDecorator) {
         super(SingleFileReport.class, task, callbackActionDecorator);
 

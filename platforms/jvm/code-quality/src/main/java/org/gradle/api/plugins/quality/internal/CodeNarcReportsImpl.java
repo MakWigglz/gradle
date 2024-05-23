@@ -28,6 +28,7 @@ import javax.inject.Inject;
 public class CodeNarcReportsImpl extends TaskReportContainer<SingleFileReport> implements CodeNarcReports {
 
     @Inject
+    @SuppressWarnings("this-escape")
     public CodeNarcReportsImpl(Task task, CollectionCallbackActionDecorator callbackActionDecorator) {
         super(SingleFileReport.class, task, callbackActionDecorator);
 

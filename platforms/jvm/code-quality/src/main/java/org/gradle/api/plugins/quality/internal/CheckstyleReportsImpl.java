@@ -28,7 +28,9 @@ import org.gradle.api.reporting.internal.TaskReportContainer;
 import javax.inject.Inject;
 
 public class CheckstyleReportsImpl extends TaskReportContainer<SingleFileReport> implements CheckstyleReports {
+
     @Inject
+    @SuppressWarnings("this-escape")
     public CheckstyleReportsImpl(Task task, CollectionCallbackActionDecorator callbackActionDecorator) {
         super(SingleFileReport.class, task, callbackActionDecorator);
 

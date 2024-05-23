@@ -59,6 +59,7 @@ public abstract class CodeNarc extends AbstractCodeQualityTask implements Report
 
     private final CodeNarcReports reports;
 
+    @SuppressWarnings("this-escape")
     public CodeNarc() {
         super();
         reports = getObjectFactory().newInstance(CodeNarcReportsImpl.class, this);
