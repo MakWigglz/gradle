@@ -23,13 +23,10 @@ import org.gradle.nativeplatform.fixtures.app.XCTestCaseElement
 import org.gradle.nativeplatform.fixtures.app.XCTestSourceElement
 import org.gradle.nativeplatform.fixtures.app.XCTestSourceFileElement
 import org.gradle.test.fixtures.file.DoesNotSupportNonAsciiPaths
-import org.gradle.test.precondition.Requires
-import org.gradle.test.preconditions.UnitTestPreconditions
 import org.gradle.testing.AbstractTestFrameworkIntegrationTest
 
 import static org.junit.Assume.assumeTrue
 
-@Requires(UnitTestPreconditions.NotMacOsM1)
 @DoesNotSupportNonAsciiPaths(reason = "Swift sometimes fails when executed from non-ASCII directory")
 class XCTestTestFrameworkIntegrationTest extends AbstractTestFrameworkIntegrationTest {
     def setup() {

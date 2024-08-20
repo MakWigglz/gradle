@@ -32,12 +32,8 @@ import org.gradle.nativeplatform.fixtures.app.SourceElement
 import org.gradle.nativeplatform.fixtures.app.SwiftApp
 import org.gradle.nativeplatform.fixtures.app.SwiftLib
 import org.gradle.test.fixtures.file.TestFile
-import org.gradle.test.precondition.Requires
-import org.gradle.test.preconditions.UnitTestPreconditions.NotMacOs
 import org.gradle.util.internal.VersionNumber
 
-// See https://github.com/gradle/dev-infrastructure/issues/538
-@Requires(NotMacOs)
 @RequiresInstalledToolChain(ToolChainRequirement.SWIFTC)
 class SwiftIncrementalBuildIntegrationTest extends AbstractInstalledToolChainIntegrationSpec {
     def "rebuilds application when a single source file changes"() {
