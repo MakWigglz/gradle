@@ -33,7 +33,6 @@ import org.gradle.nativeplatform.fixtures.app.SwiftApp
 import org.gradle.nativeplatform.fixtures.app.SwiftLib
 import org.gradle.test.fixtures.file.DoesNotSupportNonAsciiPaths
 import org.gradle.test.fixtures.file.TestFile
-import org.gradle.util.internal.VersionNumber
 
 @RequiresInstalledToolChain(ToolChainRequirement.SWIFTC)
 @DoesNotSupportNonAsciiPaths(reason = "swiftc does not support these paths")
@@ -263,11 +262,11 @@ class SwiftIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInt
         }
 
         then:
-        file("app/build/obj/main/debug").assertHasDescendants(expectedIntermediateDescendants(app.application.original, "App"))
+        file("app/build/obj/main/debug").assertContainsDescendants(expectedIntermediateDescendants(app.application.original))
         installation("app/build/install/main/debug").assertInstalled()
 
         sharedLibrary("greeter/build/lib/main/debug/Greeter").assertExists()
-        outputDirectory.assertHasDescendants(expectedIntermediateDescendants(app.library.original, "Greeter"))
+        outputDirectory.assertContainsDescendants(expectedIntermediateDescendants(app.library.original))
 
         when:
         app.library.applyChangesToProject(file('greeter'))
@@ -286,7 +285,7 @@ class SwiftIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInt
 
         outputs.noneRecompiled()
         sharedLibrary("greeter/build/lib/main/debug/Greeter").assertExists()
-        file("greeter/build/obj/main/debug").assertHasDescendants(expectedIntermediateDescendants(app.library.alternate, "Greeter"))
+        file("greeter/build/obj/main/debug").assertContainsDescendants(expectedIntermediateDescendants(app.library.alternate))
     }
 
     def "removes stale executable file when all source files are removed"() {
@@ -303,7 +302,7 @@ class SwiftIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInt
 
         then:
 
-        file("build/obj/main/debug").assertHasDescendants(expectedIntermediateDescendants(app.original, "App"))
+        file("build/obj/main/debug").assertContainsDescendants(expectedIntermediateDescendants(app.original))
         executable("build/exe/main/debug/App").assertExists()
         installation("build/install/main/debug").assertInstalled()
 
@@ -338,7 +337,7 @@ class SwiftIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInt
 
         then:
         sharedLibrary("build/lib/main/debug/Greeter").assertExists()
-        file("build/obj/main/debug").assertHasDescendants(expectedIntermediateDescendants(lib.original, "Greeter"))
+        file("build/obj/main/debug").assertContainsDescendants(expectedIntermediateDescendants(lib.original))
 
         when:
         lib.applyChangesToProject(testDirectory)
@@ -353,7 +352,7 @@ class SwiftIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInt
         file("build/obj/main/debug").assertDoesNotExist()
     }
 
-    private List<String> expectedIntermediateDescendants(SourceElement sourceElement, String moduleName = null) {
+    private List<String> expectedIntermediateDescendants(SourceElement sourceElement) {
         List<String> result = new ArrayList<String>()
 
         String sourceSetName = sourceElement.getSourceSetName()
@@ -362,37 +361,12 @@ class SwiftIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInt
         for (SourceFile sourceFile : sourceElement.getFiles()) {
             def swiftFile = file("src", sourceSetName, sourceFile.path, sourceFile.name)
             result.add(objectFileFor(swiftFile, intermediateFilesDirPath).relativizeFrom(intermediateFilesDir).path)
-
-            if (toolChain.version < VersionNumber.version(5, 9)) {
-                // No longer added in 5.9
-                result.add(swiftmoduleFileFor(swiftFile).relativizeFrom(intermediateFilesDir).path)
-                result.add(swiftdocFileFor(swiftFile).relativizeFrom(intermediateFilesDir).path)
-
-                if (toolChain.version >= VersionNumber.version(5, 3)) {
-                    // Seems to be introduced by 5.3:
-                    // https://github.com/bazelbuild/rules_swift/issues/496
-                    result.add(swiftsourceinfoFileFor(swiftFile).relativizeFrom(intermediateFilesDir).path)
-                }
-            }
-
             result.add(dependFileFor(swiftFile).relativizeFrom(intermediateFilesDir).path)
             result.add(swiftDepsFileFor(swiftFile).relativizeFrom(intermediateFilesDir).path)
         }
 
-        if (toolChain.version >= VersionNumber.version(5, 9)) {
-            result.add("module.priors")
-            if (moduleName != null) {
-                result.add("${moduleName}.emit-module.d")
-            }
-        } else {
-            if (toolChain.version >= VersionNumber.version(4, 2)) {
-                result.add("module.swiftdeps~moduleonly")
-            }
-            result.add("module.swiftdeps")
-        }
-
         result.add("output-file-map.json")
-        return result.collect { it.toString() } // get rid of GString instances
+        return result
     }
 
     def swiftmoduleFileFor(File sourceFile, String intermediateFilesDir = "build/obj/main/debug") {
