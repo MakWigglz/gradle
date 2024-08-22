@@ -62,6 +62,14 @@ The Swift and C++ plugins are now configuration cache compatible.
 
 The `cpp-unit` and `xctest` plugins are not yet compatible.
 
+### Other improvements
+
+#### Help task
+
+In any version of Gradle, you can run `gradle help --task <task-name>` to get help on a specific task.
+You can now get the same result with `gradle <task-name> --help`, e.g. `gradle init --help`.
+This is slightly more convenient and consistent with other command-line tools.
+
 <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ADD RELEASE FEATURES ABOVE
 ==========================================================
