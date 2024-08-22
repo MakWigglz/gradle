@@ -33,9 +33,9 @@ import org.gradle.api.internal.attributes.AttributesSchemaInternal
 import org.gradle.api.internal.attributes.DefaultAttributesSchema
 import org.gradle.api.internal.attributes.ImmutableAttributes
 import org.gradle.api.problems.internal.InternalProblems
-import org.gradle.internal.component.resolution.failure.ResolutionFailureHandler
 import org.gradle.internal.component.external.descriptor.DefaultExclude
 import org.gradle.internal.component.external.model.ImmutableCapabilities
+import org.gradle.internal.component.resolution.failure.ResolutionFailureHandler
 import org.gradle.internal.component.resolution.failure.exception.VariantSelectionByAttributesException
 import org.gradle.internal.component.resolution.failure.exception.VariantSelectionByNameException
 import org.gradle.util.AttributeTestUtil
@@ -385,6 +385,11 @@ Configuration 'bar':
         @Override
         List<? extends VariantGraphResolveState> getVariantsForAttributeMatching() {
             variants.findAll { it -> !it.attributes.isEmpty()}
+        }
+
+        @Override
+        VariantGraphResolveState getLegacyVariant() {
+            getVariantByConfigurationName(Dependency.DEFAULT_CONFIGURATION)
         }
 
         @Override
