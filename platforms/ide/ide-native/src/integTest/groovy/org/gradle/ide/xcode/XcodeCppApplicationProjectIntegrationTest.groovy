@@ -21,6 +21,7 @@ import org.gradle.nativeplatform.fixtures.app.CppApp
 import org.gradle.nativeplatform.fixtures.app.CppAppWithLibrary
 import org.gradle.nativeplatform.fixtures.app.CppSourceElement
 import org.gradle.test.precondition.Requires
+import org.gradle.test.preconditions.IntegTestPreconditions
 import org.gradle.test.preconditions.UnitTestPreconditions
 
 import static org.gradle.ide.xcode.internal.XcodeUtils.toSpaceSeparatedList
@@ -43,7 +44,7 @@ class XcodeCppApplicationProjectIntegrationTest extends AbstractXcodeCppProjectI
         return new CppApp()
     }
 
-    @Requires(UnitTestPreconditions.HasXCode)
+    @Requires(value = [UnitTestPreconditions.HasXCode, IntegTestPreconditions.NotEmbeddedExecutor], reason = "Need a Gradle install to pass to xcodebuild")
     @ToBeFixedForConfigurationCache
     def "can create xcode project for unbuildable C++ application with library"() {
         useXcodebuildTool()
@@ -77,11 +78,11 @@ class XcodeCppApplicationProjectIntegrationTest extends AbstractXcodeCppProjectI
 
         then:
         executedAndNotSkipped(":app:xcodeProject", ":app:xcodeProjectWorkspaceSettings", ":app:xcode",
-                ":greeter:xcodeProject", ":greeter:xcodeProjectWorkspaceSettings", ":greeter:xcodeScheme", ":greeter:xcode",
-                ":xcodeWorkspace", ":xcodeWorkspaceWorkspaceSettings", ":xcode")
+            ":greeter:xcodeProject", ":greeter:xcodeProjectWorkspaceSettings", ":greeter:xcodeScheme", ":greeter:xcode",
+            ":xcodeWorkspace", ":xcodeWorkspaceWorkspaceSettings", ":xcode")
 
         rootXcodeWorkspace.contentFile
-                .assertHasProjects("${rootProjectName}.xcodeproj", 'app/app.xcodeproj', 'greeter/greeter.xcodeproj')
+            .assertHasProjects("${rootProjectName}.xcodeproj", 'app/app.xcodeproj', 'greeter/greeter.xcodeproj')
 
         def project = xcodeProject("app/app.xcodeproj").projectFile
         project.indexTarget.getBuildSettings().HEADER_SEARCH_PATHS == toSpaceSeparatedList(file("app/src/main/headers"))
@@ -89,24 +90,24 @@ class XcodeCppApplicationProjectIntegrationTest extends AbstractXcodeCppProjectI
 
         when:
         def resultApp = xcodebuild
-                .withWorkspace(rootXcodeWorkspace)
-                .withScheme('App')
-                .fails()
+            .withWorkspace(rootXcodeWorkspace)
+            .withScheme('App')
+            .fails()
 
         then:
         resultApp.error.contains('The workspace named "app" does not contain a scheme named "App".')
 
         when:
         def resultLib = xcodebuild
-                .withWorkspace(rootXcodeWorkspace)
-                .withScheme('Greeter')
-                .succeeds()
+            .withWorkspace(rootXcodeWorkspace)
+            .withScheme('Greeter')
+            .succeeds()
 
         then:
         resultLib.assertTasksExecuted(':greeter:compileDebugCpp', ':greeter:linkDebug', ':greeter:_xcode___Greeter_Debug')
     }
 
-    @Requires(UnitTestPreconditions.HasXCode)
+    @Requires(value = [UnitTestPreconditions.HasXCode, IntegTestPreconditions.NotEmbeddedExecutor], reason = "Need a Gradle install to pass to xcodebuild")
     @ToBeFixedForConfigurationCache
     def "can create xcode project for C++ application with unbuildable library"() {
         useXcodebuildTool()
@@ -141,20 +142,20 @@ class XcodeCppApplicationProjectIntegrationTest extends AbstractXcodeCppProjectI
 
         then:
         executedAndNotSkipped(":app:xcodeProject", ":app:xcodeProjectWorkspaceSettings", ":app:xcodeScheme", ":app:xcode",
-                ":greeter:xcodeProject", ":greeter:xcodeProjectWorkspaceSettings", ":greeter:xcode",
-                ":xcodeWorkspace", ":xcodeWorkspaceWorkspaceSettings", ":xcode")
+            ":greeter:xcodeProject", ":greeter:xcodeProjectWorkspaceSettings", ":greeter:xcode",
+            ":xcodeWorkspace", ":xcodeWorkspaceWorkspaceSettings", ":xcode")
 
         rootXcodeWorkspace.contentFile
-                .assertHasProjects("${rootProjectName}.xcodeproj", 'app/app.xcodeproj', 'greeter/greeter.xcodeproj')
+            .assertHasProjects("${rootProjectName}.xcodeproj", 'app/app.xcodeproj', 'greeter/greeter.xcodeproj')
 
         def project = xcodeProject("app/app.xcodeproj").projectFile
         project.indexTarget.getBuildSettings().HEADER_SEARCH_PATHS == toSpaceSeparatedList(file("app/src/main/headers"), file("greeter/src/main/public"))
 
         when:
         def resultApp = xcodebuild
-                .withWorkspace(rootXcodeWorkspace)
-                .withScheme('App')
-                .fails()
+            .withWorkspace(rootXcodeWorkspace)
+            .withScheme('App')
+            .fails()
 
         then:
         resultApp.assertHasCause("Could not resolve all dependencies for configuration ':app:nativeRuntimeDebug'.")
@@ -163,9 +164,9 @@ class XcodeCppApplicationProjectIntegrationTest extends AbstractXcodeCppProjectI
 
         when:
         def resultLib = xcodebuild
-                .withWorkspace(rootXcodeWorkspace)
-                .withScheme('Greeter')
-                .fails()
+            .withWorkspace(rootXcodeWorkspace)
+            .withScheme('Greeter')
+            .fails()
 
         then:
         resultLib.error.contains('The workspace named "app" does not contain a scheme named "Greeter".')
