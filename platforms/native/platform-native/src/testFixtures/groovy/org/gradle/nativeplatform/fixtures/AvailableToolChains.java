@@ -85,10 +85,6 @@ public class AvailableToolChains {
     @Nullable
     public static InstalledToolChain getDefaultToolChain() {
         List<ToolChainCandidate> toolChains = getToolChains();
-        System.out.println("Discovered native toolchains:");
-        for (ToolChainCandidate toolChain : toolChains) {
-            System.out.println(toolChain + ", available: " + toolChain.isAvailable());
-        }
         for (ToolChainCandidate toolChain : toolChains) {
             if (toolChain.isAvailable() && !toolChain.meets(ToolChainRequirement.SWIFTC)) {
                 return (InstalledToolChain) toolChain;
