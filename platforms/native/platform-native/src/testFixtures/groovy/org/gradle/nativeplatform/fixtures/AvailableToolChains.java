@@ -78,14 +78,19 @@ public class AvailableToolChains {
     private static List<ToolChainCandidate> toolChains;
 
     /**
-     * Locates the tool chain that would be used as the default for the current machine, if any.
+     * Locates the C++ tool chain that would be used as the default for the current machine, if any.
      *
      * @return null if there is no such tool chain.
      */
     @Nullable
     public static InstalledToolChain getDefaultToolChain() {
-        for (ToolChainCandidate toolChain : getToolChains()) {
-            if (toolChain.isAvailable()) {
+        List<ToolChainCandidate> toolChains = getToolChains();
+        System.out.println("Discovered native toolchains:");
+        for (ToolChainCandidate toolChain : toolChains) {
+            System.out.println(toolChain + ", available: " + toolChain.isAvailable());
+        }
+        for (ToolChainCandidate toolChain : toolChains) {
+            if (toolChain.isAvailable() && !toolChain.meets(ToolChainRequirement.SWIFTC)) {
                 return (InstalledToolChain) toolChain;
             }
         }
