@@ -80,8 +80,9 @@ public class DefaultBuildTreeLifecycleController implements BuildTreeLifecycleCo
     @Override
     public <T> T fromBuildModel(boolean runTasks, BuildTreeModelAction<? extends T> action) {
         return runBuild(() -> {
-            modelCreator.beforeTasks(new PreliminaryConfiguringBuildTreeModelAction<>(action, buildLifecycleController));
+            modelCreator.beforeTasks(action);
             if (runTasks && isEligibleToRunTasks()) {
+                buildLifecycleController.configureProjects();
                 ExecutionResult<Void> result = workController.scheduleAndRunRequestedTasks(null);
                 if (!result.getFailures().isEmpty()) {
                     return result.asFailure();
@@ -131,6 +132,7 @@ public class DefaultBuildTreeLifecycleController implements BuildTreeLifecycleCo
         });
     }
 
+    @SuppressWarnings("unused")
     private static class PreliminaryConfiguringBuildTreeModelAction<T> implements BuildTreeModelAction<T> {
 
         private final BuildTreeModelAction<T> delegate;
@@ -153,7 +155,6 @@ public class DefaultBuildTreeLifecycleController implements BuildTreeLifecycleCo
         @Nullable
         @Override
         public T fromBuildModel(BuildTreeModelController controller) {
-            buildLifecycleController.configureProjects();
             return delegate.fromBuildModel(controller);
         }
     }

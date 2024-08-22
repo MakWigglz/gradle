@@ -64,7 +64,7 @@ class DeferredConfigurationCrossVersionSpec extends ToolingApiSpecification {
         result.assertNotOutput(prefix)
     }
 
-    def "runs settings scripts and does not configure projects when action queries GradleProject model"() {
+    def "1runs settings scripts and does not configure projects when action queries GradleProject model"() {
         setupBuild()
 
         when:
