@@ -29,7 +29,7 @@ class ScalaCompileOptionsTest extends Specification {
 
         expect:
         scalaCompileOptions.additionalParameters != null
-        scalaCompileOptions.additionalParameters.isEmpty()
+        scalaCompileOptions.additionalParameters.get().isEmpty()
     }
 
     def 'can append to additional parameters #description'() {
@@ -40,7 +40,7 @@ class ScalaCompileOptionsTest extends Specification {
         scalaCompileOptions.additionalParameters.add("-some-flag")
 
         then:
-        scalaCompileOptions.additionalParameters == ["-some-flag"]
+        scalaCompileOptions.additionalParameters.get() == ["-some-flag"]
 
         where:
         description                       | action
