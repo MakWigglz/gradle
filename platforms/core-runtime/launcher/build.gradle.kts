@@ -53,6 +53,7 @@ dependencies {
     implementation(projects.toolchainsJvmShared)
     implementation(projects.serviceRegistryBuilder)
     implementation(projects.fileTemp)
+    implementation(projects.processServices)
 
     implementation(libs.slf4jApi)
 
