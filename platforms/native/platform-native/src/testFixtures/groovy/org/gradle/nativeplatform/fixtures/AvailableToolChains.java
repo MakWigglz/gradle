@@ -137,7 +137,8 @@ public class AvailableToolChains {
         //   We need to search for Clang differently on macOS because we need to know the Xcode version for x86 support.
         if (OperatingSystem.current().isMacOsX()) {
             toolChains.addAll(findXcodes().stream().map(InstalledXcode::getClang).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList()));
-        } else {
+        }
+        if (toolChains.isEmpty()) {
             GccMetadataProvider versionDeterminer = GccMetadataProvider.forClang(TestFiles.execActionFactory());
             Set<File> clangCandidates = ImmutableSet.copyOf(OperatingSystem.current().findAllInPath("clang"));
             if (!clangCandidates.isEmpty()) {
@@ -311,7 +312,7 @@ public class AvailableToolChains {
     public static abstract class ToolChainCandidate implements VersionedTool {
         @Override
         public String toString() {
-            return getDisplayName();
+            return getDisplayName() + " (available: " + isAvailable() + ")";
         }
 
         public abstract String getDisplayName();
