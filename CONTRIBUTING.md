@@ -1,9 +1,9 @@
 # Contributing to the Gradle Build Tool
 
 Thank you for your interest in contributing to Gradle!
-This guide explains how to contribute to the core Gradle components, 
+This guide explains how to contribute to the core Gradle components,
 extensions and documentation located in this repository.
-For other extensions and components, see the 
+For other extensions and components, see the
 [Gradle Community Resources](https://gradle.org/resources/).
 
 This guide will help you to...
@@ -45,7 +45,7 @@ to ask any questions.
 
 In order to make changes to Gradle, you'll need:
 
-* A [Java Development Kit](http://jdk.java.net/) (JDK) **version 11**. Fixed version is required to use [remote cache](#remote-build-cache). 
+* A [Java Development Kit](http://jdk.java.net/) (JDK) **version 11**. Fixed version is required to use [remote cache](#remote-build-cache).
 * A text editor or IDE. We use and recommend [IntelliJ IDEA CE](http://www.jetbrains.com/idea/).  IntelliJ Ultimate will also work. You'll need IntelliJ 2021.2.2 or newer.
 * [git](https://git-scm.com/) and a [GitHub account](https://github.com/join).
 
@@ -57,13 +57,14 @@ Gradle uses pull requests for contributions. Fork [gradle/gradle](https://github
 #### Import Gradle into IntelliJ
 
 To import Gradle into IntelliJ:
-- Open the `build.gradle.kts` file with IntelliJ and choose "Open as Project"
-- Make sure "Create separate module per source set" is selected
-- Make sure  "Use default gradle wrapper" is selected
-- Select a Java 11 VM as "Gradle JVM"
-- In the "File already exists" dialogue, choose "Yes" to overwrite
-- In the "Open Project" dialogue, choose "Delete Existing Project and Import"
-- Revert the Git changes to files in the `.idea` folder
+
+* Open the `build.gradle.kts` file with IntelliJ and choose "Open as Project"
+* Make sure "Create separate module per source set" is selected
+* Make sure  "Use default gradle wrapper" is selected
+* Select a Java 11 VM as "Gradle JVM"
+* In the "File already exists" dialogue, choose "Yes" to overwrite
+* In the "Open Project" dialogue, choose "Delete Existing Project and Import"
+* Revert the Git changes to files in the `.idea` folder
 
 NOTE: Due to the project size, the very first import can take a while and IntelliJ might become unresponsive for several seconds during this period.
 
@@ -78,7 +79,7 @@ If you did not have a Java 11 SDK installed before importing the project into In
 All code contributions should contain the following:
 
 * Create unit tests using [Spock](https://spockframework.org/spock/docs/2.0/index.html) for new classes or methods that you introduce.
-* Create integration tests that exercise a Gradle build for the bug/feature. 
+* Create integration tests that exercise a Gradle build for the bug/feature.
 * Annotate tests that correspond to a bug on GitHub (`@Issue("https://github.com/gradle/gradle/issues/2622")`).
 * Add documentation to the User Manual and DSL Reference (under [platforms/documentation/docs/src/docs](platforms/documentation/docs/src/docs/)).
 * For error messages related changes, follow the [ErrorMessages Guide](contributing/ErrorMessages.md).
@@ -120,11 +121,14 @@ The commit messages that accompany your code changes are an important piece of d
 After making changes, you can test your code in 2 ways:
 
 1. Run tests.
-- Run `./gradlew :<subproject>:quickTest` where `<subproject>` is the name of the subproject you've changed. 
-- For example: `./gradlew :launcher:quickTest`.
-2. Install Gradle locally and try out a change in behavior manually. 
-- Install: `./gradlew install -Pgradle_installPath=/any/path`
-- Use: `/any/path/bin/gradle taskName`.
+
+* Run `./gradlew :<subproject>:quickTest` where `<subproject>` is the name of the subproject you've changed.
+* For example: `./gradlew :launcher:quickTest`.
+
+2. Install Gradle locally and try out a change in behavior manually.
+
+* Install: `./gradlew install -Pgradle_installPath=/any/path`
+* Use: `/any/path/bin/gradle taskName`.
 
 It's also a good idea to run `./gradlew sanityCheck` before submitting your change because this will help catch code style issues.
 
@@ -212,7 +216,7 @@ Run the `./gradlew sanityCheck` task again to make sure there are no more errors
 #### Filtering changes by severity
 
 There is a somewhat non-obvious filter present on the page that allows you to control which type of messages are displayed.
-The filter is a dropdown box that appears when you click the `Severity ⬇️ ` label in the black header bar to the immediate right of the Gradle version.
+The filter is a dropdown box that appears when you click the `Severity ⬇️` label in the black header bar to the immediate right of the Gradle version.
 
 If you have a large number of messages of different types, filtering by severity to see only `Error`s can be helpful when processing the report.
 Errors are the only type of issues that must be resolved for the `checkBinaryCompatibility` task to succeed.
@@ -225,7 +229,8 @@ If you have multiple changes to accept (and you're sure they ought to be accepte
 This button will cause a Javascript alert dialog to appear asking you to type a reason for accepting the changes, e.g. "Added new API for Gradle 8.x".
 
 Clicking okay on the dialog will cause a copy of the `accepted-public-api-changes.json` containing your (properly sorted) addition to be downloaded.
-You can then replace the existing file with this new downloaded version. 
+You can then replace the existing file with this new downloaded version.
+
 ### Java Toolchain
 
 The Gradle build uses [Java Toolchain](https://docs.gradle.org/current/userguide/toolchains.html) support to compile and execute tests across multiple versions of Java.
