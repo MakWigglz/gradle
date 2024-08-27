@@ -1,12 +1,4 @@
-// This file is a spike of what externally published rules for capabilities could look like.
-//
-// The idea is that such "rules" could be published, then applied by a plugin.
-//
-// Whenever two libraries provide the same capability, for example, "log4j" and "log4j-over-slfj4",
-// it's illegal to have both of them on the classpath. Use this file to declare that they provide
-// the same capability, and that we prefer to use slf4j in this case.
 [
-    // Soft upgrades: only in case of conflict, will use the latest version of the selected module in the graph
     {
         "name": "guava",
         "providedBy": [
@@ -52,13 +44,12 @@
         ],
         "selected": "org.codehaus.groovy:groovy"
     },
-
-    // forced upgrade: the following modules will automatically be replaced with the selected module
-    // even if there's no conflict, and forces an upgrade to the specified version
     {
         "name": "asm",
         "providedBy": [
-            "asm:asm", "asm:asm-all", "asm:asm-debug-all"
+            "asm:asm",
+            "asm:asm-all",
+            "asm:asm-debug-all"
         ],
         "selected": "org.ow2.asm:asm",
         "upgrade": "7.1"
@@ -66,7 +57,9 @@
     {
         "name": "asm-analysis",
         "providedBy": [
-            "asm:asm", "asm:asm-all", "asm:asm-debug-all"
+            "asm:asm",
+            "asm:asm-all",
+            "asm:asm-debug-all"
         ],
         "selected": "org.ow2.asm:asm",
         "upgrade": "7.1"
@@ -74,7 +67,9 @@
     {
         "name": "asm-commons",
         "providedBy": [
-            "asm:asm-commons", "asm:asm-all", "asm:asm-debug-all"
+            "asm:asm-commons",
+            "asm:asm-all",
+            "asm:asm-debug-all"
         ],
         "selected": "org.ow2.asm:asm-commons",
         "upgrade": "7.1"
@@ -82,7 +77,9 @@
     {
         "name": "asm-tree",
         "providedBy": [
-            "asm:asm-tree", "asm:asm-all", "asm:asm-debug-all"
+            "asm:asm-tree",
+            "asm:asm-all",
+            "asm:asm-debug-all"
         ],
         "selected": "org.ow2.asm:asm-tree",
         "upgrade": "7.1"
@@ -90,7 +87,9 @@
     {
         "name": "asm-util",
         "providedBy": [
-            "asm:asm-util", "asm:asm-all", "asm:asm-debug-all"
+            "asm:asm-util",
+            "asm:asm-all",
+            "asm:asm-debug-all"
         ],
         "selected": "org.ow2.asm:asm-util",
         "upgrade": "7.1"
